@@ -7,20 +7,37 @@ const AuthContext = React.createContext({
   logout: () => {},
 });
 
+const calculateRemainingTime = (expirationTime) => {
+  const currentTime = new Date().getTime();
+  const adjExpirationTime = new Date(expirationTime).getTime();
+  const remainingDuration = adjExpirationTime - currentTime;
+
+  return remainingDuration;
+};
+
 export const AuthContextProider = (props) => {
-  const [token, setToken] = useState(null);
+  // create local storage of token so refresh doesn't lose token of user
+  const initialToken = localStorage.getItem("token");
+  const [token, setToken] = useState(initialToken);
 
   // but this simply converts this truthy or falsy value to a true or false Boolean value. If token is a string that's not empty, this will return true, if token is a string that is empty, this will return false.
   const userIsLoggedIn = !!token;
 
-  const loginHandler = (token) => {
-    setToken(token);
-  };
-
   const logoutHandler = () => {
     setToken(null);
+    // remove local storage when logout
+    localStorage.removeItem("token");
   };
 
+  const loginHandler = (token, expirationTime) => {
+    setToken(token);
+    // create local storage of token so refresh doesn't lose token of user
+    localStorage.setItem("token", token);
+
+    const remainingTime = calculateRemainingTime(expirationTime);
+
+    setTimeout(logoutHandler, remainingTime);
+  };
   const contextValue = {
     token: token,
     isLoggedIn: userIsLoggedIn,

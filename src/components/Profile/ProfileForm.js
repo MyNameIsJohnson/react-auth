@@ -1,13 +1,12 @@
 import classes from "./ProfileForm.module.css";
 import { useRef, useContext, useState } from "react";
 import AuthContext from "../../store/auth-context";
+import { useHistory } from "react-router-dom";
 
 const ProfileForm = () => {
+  const history = useHistory();
   const newPasswordInputRef = useRef();
   const authContext = useContext(AuthContext);
-
-  const [isLogin, setIsLogin] = useState(true);
-  const [error, setError] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
   const submithandler = (e) => {
@@ -43,10 +42,10 @@ const ProfileForm = () => {
       })
       .then((data) => {
         console.log(data);
-        alert("Successful SignUp");
+        alert("Password updated");
+        history.replace("/");
       })
       .catch((err) => {
-        setError("Authentication Failed");
         alert(err.message);
       });
   };
@@ -55,12 +54,7 @@ const ProfileForm = () => {
       <div className={classes.control}>
         <label htmlFor="new-password">New Password</label>
         {/* bind ref to input ref={newPasswordInputRef*/}
-        <input
-          type="password"
-          id="new-password"
-          minLength="7"
-          ref={newPasswordInputRef}
-        />
+        <input type="password" id="new-password" ref={newPasswordInputRef} />
       </div>
       <div className={classes.action}>
         <button>Change Password</button>
