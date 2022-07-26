@@ -53,24 +53,24 @@ const AuthForm = () => {
           return res.json();
         } else {
           return res.json().then((data) => {
-            let errorMessage = "Authentication Failed!!!";
+            // let errorMessage = "Authentication Failed!!!";
             // if (data && data.error && data.error.message) {
             //   setError(data.error.message);
             // }
-            throw new Error(errorMessage);
+            throw new Error(data.error.message);
           });
         }
       })
       .then((data) => {
+        alert("Success");
         const expirationTime = new Date(
           new Date().getTime() + +data.expiresIn * 1000
         );
-        authCtx.login(data.idToken, expirationTime);
+        authCtx.login(data.idToken, expirationTime.toISOString());
         history.replace("/");
       })
       .catch((err) => {
-        setError("Authentication Failed");
-        alert(err.message);
+        setError(err.message);
       });
   };
 
