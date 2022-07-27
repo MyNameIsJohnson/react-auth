@@ -48,6 +48,7 @@ export const AuthContextProider = (props) => {
   // but this simply converts this truthy or falsy value to a true or false Boolean value. If token is a string that's not empty, this will return true, if token is a string that is empty, this will return false.
   const userIsLoggedIn = !!token;
 
+  // use callback to insure func is not recreated unnecessarly from useEffect
   const logoutHandler = useCallback(() => {
     setToken(null);
     // remove local storage when logout
@@ -75,6 +76,7 @@ export const AuthContextProider = (props) => {
       console.log(tokenData.duration);
       logoutTimer = setTimeout(logoutHandler, tokenData.duration);
     }
+    // should add logoutHandler as dependency
   }, [tokenData, logoutHandler]);
 
   const contextValue = {
