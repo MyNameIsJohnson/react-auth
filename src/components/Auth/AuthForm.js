@@ -27,12 +27,13 @@ const AuthForm = () => {
 
     setIsLoading(true);
     let url;
+
+    console.log(process.env.REACT_APP_SIGNUP_API_KEY);
+    console.log(process.env.REACT_APP_SIGNINWITHPASSWORD_API_KEY);
     if (isLogin) {
-      url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDJGK1hdWFATeua64_UyPE_vTQQH-Iz4eI";
+      url = `${process.env.REACT_APP_SIGNINWITHPASSWORD_API_KEY}`;
     } else {
-      url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDJGK1hdWFATeua64_UyPE_vTQQH-Iz4eI";
+      url = `${process.env.REACT_APP_SIGNUP_API_KEY}`;
       // can build custom hook here, but code below is a direct request without redux, hooks ...
       // Need to use .env file to hide API key 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_Key]'
     }

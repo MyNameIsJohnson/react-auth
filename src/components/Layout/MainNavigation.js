@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 import classes from "./MainNavigation.module.css";
 import { useContext, useState } from "react";
 import AuthContext from "../../store/auth-context";
